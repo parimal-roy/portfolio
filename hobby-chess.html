@@ -94,12 +94,14 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 .content-card h3{margin-bottom:1rem;color:var(--primary);font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;}
 .content-card p{color:var(--muted);font-size:0.92rem;line-height:1.8;}
 .content-card ul{padding-left:1.4rem;display:flex;flex-direction:column;gap:6px;color:var(--muted);font-size:0.9rem;line-height:1.7;}
-
-
-
-
-
-
+.upload-zone{background:var(--bg3);border:2px dashed var(--border);border-radius:var(--r);padding:2.5rem;text-align:center;cursor:pointer;transition:all var(--t);margin-top:1rem;}
+.upload-zone:hover{border-color:var(--primary);background:var(--primary-glow);}
+.upload-zone .icon{font-size:2rem;}
+.upload-zone p{color:var(--muted);font-size:0.9rem;margin-top:0.5rem;}
+.img-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:1.5rem;}
+.img-thumb{border-radius:var(--r-sm);overflow:hidden;aspect-ratio:1;border:1px solid var(--border);transition:all var(--t);}
+.img-thumb:hover{border-color:var(--primary);transform:scale(1.03);}
+.img-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
 .list-entry-area{display:flex;flex-direction:column;gap:0.75rem;}
 .entry-form{display:flex;gap:0.75rem;margin-top:1rem;}
 .entry-form input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:0.6rem 1rem;color:var(--text);font-size:0.9rem;font-family:inherit;transition:border-color var(--t);}
@@ -170,7 +172,17 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
   </div>
   <ul class="entry-list" id="chess-list" style="margin-top:1rem;"></ul>
 </div>
-
+<div class="content-card reveal">
+  <h3>📸 My Photos</h3>
+  <p>Add your personal photos here — they'll display in a beautiful gallery.</p>
+  <div class="upload-zone" onclick="document.getElementById('hobby-upload').click()">
+    <div class="icon">📁</div><p>Click to upload photos (JPG, PNG)</p>
+    <input type="file" id="hobby-upload" multiple accept="image/*" style="display:none" onchange="handleUpload(this,'hobby-gallery')"/>
+  </div>
+  <div class="img-gallery" id="hobby-gallery"></div>
+</div>
+</div>
+</div>
 <footer style="background:var(--bg);border-top:1px solid var(--border);padding:1.5rem 0;text-align:center;position:relative;z-index:1;">
 <div class="container"><p style="font-size:0.83rem;color:var(--muted);">© 2025 <span style="color:var(--primary);font-weight:700;">Parimal Chandra Roy</span></p></div>
 </footer>
@@ -217,7 +229,15 @@ allRev.forEach(el=>rObs.observe(el));
   draw();
 })();
 
-;
+function handleUpload(input, galleryId) {
+  const gallery = document.getElementById(galleryId);
+  Array.from(input.files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const div = document.createElement('div'); div.className='img-thumb';
+      div.innerHTML = `<img src="${e.target.result}" alt="photo"/>`;
+      gallery.appendChild(div);
+    };
     reader.readAsDataURL(file);
   });
 }

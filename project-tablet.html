@@ -101,12 +101,14 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 .step-num{font-size:0.72rem;font-weight:700;color:var(--primary);margin-bottom:0.4rem;}
 .step-card h4{font-size:0.88rem;margin-bottom:0.3rem;}
 .step-card p{font-size:0.8rem;}
-
-
-
-
-
-
+.upload-zone{background:var(--bg3);border:2px dashed var(--border);border-radius:var(--r);padding:2.5rem;text-align:center;cursor:pointer;transition:all var(--t);margin-top:1rem;}
+.upload-zone:hover{border-color:var(--primary);background:var(--primary-glow);}
+.upload-zone .icon{font-size:2rem;}
+.upload-zone p{color:var(--muted);font-size:0.9rem;margin-top:0.5rem;}
+.img-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:1.5rem;}
+.img-thumb{border-radius:var(--r-sm);overflow:hidden;aspect-ratio:1;border:1px solid var(--border);transition:all var(--t);}
+.img-thumb:hover{border-color:var(--primary);transform:scale(1.03);}
+.img-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
 section{padding:2rem 0;position:relative;z-index:1;}
 </style>
 </head>
@@ -180,7 +182,16 @@ section{padding:2rem 0;position:relative;z-index:1;}
   <h3>✅ Conclusion</h3>
   <p>The formulated tablet passed all pharmacopoeial quality tests. The wet granulation method produced consistent granule size distribution, leading to uniform tablet weight and good mechanical properties. Optimization of disintegrant concentration could further reduce disintegration time.</p>
 </div>
-
+<div class="content-card reveal">
+  <h3>📸 Project Photos</h3>
+  <p style="color:var(--muted);font-size:0.88rem;">Add photos from your lab work, presentations, or fieldwork.</p>
+  <div class="upload-zone" onclick="document.getElementById('proj-upload').click()">
+    <div class="icon">📁</div><p>Click to upload project images</p>
+    <input type="file" id="proj-upload" multiple accept="image/*" style="display:none" onchange="handleUpload(this,'proj-gallery')"/>
+  </div>
+  <div class="img-gallery" id="proj-gallery"></div>
+</div></div>
+</div>
 <footer style="background:var(--bg);border-top:1px solid var(--border);padding:1.5rem 0;text-align:center;position:relative;z-index:1;">
 <div class="container"><p style="font-size:0.83rem;color:var(--muted);">© 2025 <span style="color:var(--primary);font-weight:700;">Parimal Chandra Roy</span></p></div>
 </footer>
@@ -227,7 +238,16 @@ allRev.forEach(el=>rObs.observe(el));
   draw();
 })();
 
-;
+function handleUpload(input, galleryId) {
+  const gallery = document.getElementById(galleryId);
+  Array.from(input.files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const div = document.createElement('div');
+      div.className = 'img-thumb';
+      div.innerHTML = `<img src="${e.target.result}" alt="photo"/>`;
+      gallery.appendChild(div);
+    };
     reader.readAsDataURL(file);
   });
 }
